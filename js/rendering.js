@@ -1,8 +1,8 @@
 import {openBigPicture} from './big-picture.js';
 import {getPhoto} from './data.js';
 
-const thumbnailTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const container = document.querySelector('.pictures');
+const thumbnailTemplate = document.querySelector('#picture').content.querySelector('.picture');
 
 const createThumbnail = ({ url, description, likes, comments, id }) => {
   const thumbnail = thumbnailTemplate.cloneNode(true);
