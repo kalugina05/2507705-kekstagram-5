@@ -1,5 +1,5 @@
-import {openBigPicture} from './big-picture.js';
-import {getPhoto} from './data.js';
+import {openBigPicture} from './full-size_images.js';
+import {generatePhotos} from './data.js';
 
 const container = document.querySelector('.pictures');
 const thumbnailTemplate = document.querySelector('#picture').content.querySelector('.picture');
@@ -20,7 +20,7 @@ const createThumbnail = ({ url, description, likes, comments, id }) => {
   return thumbnail;
 };
 
-const postsDataset = getPhoto();
+const postsDataset = generatePhotos();
 
 const renderThumbnails = () => {
   postsDataset.forEach((data) => container.append(createThumbnail(data)));
