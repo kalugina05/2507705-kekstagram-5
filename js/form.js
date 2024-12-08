@@ -1,3 +1,6 @@
+import {resetScale} from './scale.js';
+import {resetAllFilters} from './filters.js';
+
 const MAX_HASHTAGS = 5;
 const MAX_DESCRIPTION_LENGTH = 140;
 const HASHTAG = /^#[A-Za-z0-9а-яё]{1,19}$/i;
@@ -52,6 +55,10 @@ const onFileSelected = (evt) => {
     showForm();
   }
 };
+
+resetScale();
+resetAllFilters();
+
 document.addEventListener('keydown', (evt) => {
   if (evt.key === 'Escape' && isInputFocused()) {
     evt.stopPropagation();
