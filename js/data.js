@@ -32,7 +32,7 @@ const generateComments = function(count){
     comments.push({
       id: i + 1,
       // eslint-disable-next-line no-template-curly-in-string
-      avatar: 'img/avatar-${getRandomInteger(1, 7)}.svg',
+      avatar: `img/avatar-${getRandomInteger(1, 7)}.svg`,
       message: getRandomArrayElement(messages),
       name: getRandomArrayElement(names)
     });
@@ -56,7 +56,7 @@ const generatePhotos = function(){
     photos.push({
       id: i,
       // eslint-disable-next-line no-template-curly-in-string
-      url: 'photos/${i}.jpg',
+      url: `photos/${i}.jpg`,
       description: getRandomArrayElement(descriptions),
       likes: getRandomInteger(15, 200),
       comments: generateComments(getRandomInteger(0, 30))
