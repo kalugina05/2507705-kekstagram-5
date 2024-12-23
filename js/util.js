@@ -6,6 +6,7 @@ const getRandomInteger = (a, b) => {
   const result = Math.random() * (upper - lower + 1) + lower;
   return Math.floor(result);
 };
+
 const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
 
 function createIdGenerator () {
@@ -37,4 +38,13 @@ const showAlert = (message) => {
     alert.remove();
   }, ALERT_SHOW_TIME);
 };
-export{ getRandomInteger, getRandomArrayElement, createIdGenerator, showAlert };
+
+const debounce = (callback, timeoutDelay) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+
+export{ getRandomInteger, getRandomArrayElement, createIdGenerator, showAlert, debounce };

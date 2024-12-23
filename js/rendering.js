@@ -1,29 +1,24 @@
-import {openBigPicture} from './full-size_images.js';
-import {generatePhotos} from './data.js';
-
-const container = document.querySelector('.pictures');
+import { showBigPicture } from './full-size_images.js';
 const thumbnailTemplate = document.querySelector('#picture').content.querySelector('.picture');
+const container = document.querySelector('.pictures');
+const fragment = document.createDocumentFragment();
 
-const createThumbnail = ({ url, description, likes, comments, id }) => {
-  const thumbnail = thumbnailTemplate.cloneNode(true);
+const createThumbnail = (pictures) => {
+  container.querySelectorAll('.picture').forEach((element) => element.remove());
+  pictures.forEach(({url, description, comments, likes}) => {
+    const thumbnail = thumbnailTemplate.cloneNode(true);
+    thumbnail.querySelector('.picture__img').src = url;
+    thumbnail.querySelector('.picture__img').alt = description;
+    thumbnail.querySelector('.picture__comments').textContent = comments.length;
+    thumbnail.querySelector('.picture__likes').textContent = likes;
 
-  thumbnail.querySelector('.picture__img').src = url;
-  thumbnail.querySelector('.picture__img').alt = description;
-  thumbnail.querySelector('.picture__likes').textContent = likes;
-  thumbnail.querySelector('.picture__comments').textContent = comments.length;
-  thumbnail.dataset.thumbnailId = id;
-  thumbnail.addEventListener('click', (evt) => {
-    evt.preventDefault();
-    openBigPicture({ url, description, likes, comments, id });
+    thumbnail.addEventListener('click', (evt) => {
+      evt.preventDefault();
+      showBigPicture({url, description, comments, likes});
+    });
+    fragment.appendChild(thumbnail);
   });
-
-  return thumbnail;
+  container.appendChild(fragment);
 };
 
-const postsDataset = generatePhotos();
-
-const renderThumbnails = () => {
-  postsDataset.forEach((data) => container.append(createThumbnail(data)));
-};
-
-export { renderThumbnails };
+export { createThumbnail };
