@@ -1,4 +1,4 @@
-import { debounce } from './utils.js';
+import { debounce } from './util.js';
 
 const FILTER_DELAY = 500;
 const RANDOM_PHOTOS_COUNT = 10;
