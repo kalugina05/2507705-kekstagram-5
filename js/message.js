@@ -1,40 +1,52 @@
-const successMessage = document.querySelector('#success').content.querySelector('.success');
-const errorMessage = document.querySelector('#error').content.querySelector('.error');
-const body = document.body;
+import {isEscapeKey} from './util.js';
 
-let currentMessage = null;
+const body = document.querySelector('body');
 
-const hideMessage = (message) => {
-  message.remove();
-  document.removeEventListener('keydown', onEscKeyDown);
-  document.removeEventListener('click', onOutsideClick);
+
+const closeMessage = (evt, messageClass) => {
+  const isClick = evt.type === 'click';
+  const isKeydown = evt.type === 'keydown' && isEscapeKey(evt);
+
+  if (isClick || isKeydown) {
+    const message = document.querySelector(messageClass);
+
+    if (message) {
+      if (isClick && (evt.target.classList.contains(`${messageClass.slice(1)}__button`) || !evt.target.classList.contains(`${messageClass.slice(1)}__inner`))) {
+        body.removeEventListener('click', closeMessage);
+        body.removeEventListener('keydown', closeMessage);
+        message.remove();
+      } else if (isKeydown) {
+        body.removeEventListener('click', closeMessage);
+        body.removeEventListener('keydown', closeMessage);
+        message.remove();
+      }
+    }
+  }
 };
 
-function onEscKeyDown (evt) {
-  if (evt.key === 'Escape') {
-    evt.preventDefault();
-    hideMessage(currentMessage);
-  }
-}
-
-function onOutsideClick (evt) {
-  if (!evt.target.closest('div')) {
-    hideMessage(currentMessage);
-  }
-}
-
-const onCloseButtonClick = () => hideMessage(currentMessage);
-
-const showMessage = (message, buttonSelector) => {
-  currentMessage = message;
-  body.appendChild(currentMessage);
-  currentMessage.querySelector(buttonSelector)
-    .addEventListener('click', onCloseButtonClick);
-  document.addEventListener('keydown', onEscKeyDown);
-  body.addEventListener('click', onOutsideClick);
+const showMessage = (id) => {
+  const messageTemplate = document.querySelector(id).content;
+  const message = messageTemplate.cloneNode(true);
+  body.appendChild(message);
 };
 
-const showErrorMessage = () => showMessage(errorMessage, '.error__button');
-const showSuccessMessage = () => showMessage(successMessage, '.success__button');
+const showLoadError = () => {
+  const showAlertElement = document.createElement('div');
+  showAlertElement.classList.add('load_error');
+  showAlertElement.textContent = 'Не удалось загрузить данные. Попробуйте обновить страницу';
+  document.body.append(showAlertElement);
+};
 
-export { showErrorMessage, showSuccessMessage };
+const showSuccessMessage = () => {
+  body.addEventListener('keydown', (evt) => closeMessage(evt, '.success'));
+  body.addEventListener('click', (evt) => closeMessage(evt, '.success'));
+  showMessage('#success');
+};
+
+const showErrorMessage = () => {
+  body.addEventListener('keydown', (evt) => closeMessage(evt, '.error'));
+  body.addEventListener('click', (evt) => closeMessage(evt, '.error'));
+  showMessage('#error');
+};
+
+export {showLoadError, showSuccessMessage, showErrorMessage};

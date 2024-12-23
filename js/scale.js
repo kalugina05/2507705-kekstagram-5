@@ -3,44 +3,37 @@ const MIN_SCALE = 25;
 const MAX_SCALE = 100;
 const DEFAULT_SCALE = MAX_SCALE;
 
-const scaleBigButton = document.querySelector('.scale__control--bigger');
-const scaleSmallButton = document.querySelector('.scale__control--smaller');
-const scaleControlValue = document.querySelector('.scale__control--value');
+let currentScale = DEFAULT_SCALE;
 const previewImg = document.querySelector('.img-upload__preview img');
+const scaleControlValue = document.querySelector('.scale__control--value');
+const scaleSmallButton = document.querySelector('.scale__control--smaller');
+const scaleBigButton = document.querySelector('.scale__control--bigger');
 
-const scaleImage = (value) => {
-  previewImg.style.transform = `scale(${value / 100})`;
-  scaleControlValue.value = `${value}%`;
+const updateScale = () => {
+  scaleControlValue.value = `${currentScale}%`;
+  previewImg.style.transform = `scale(${currentScale / 100})`;
 };
 
-const onSmallerControlClick = () => {
-  scaleImage(Math.max(parseInt(scaleControlValue.value, 10) - STEP_SCALE, MIN_SCALE));
+const onSmallerButtonClick = () => {
+  if (currentScale > MIN_SCALE) {
+    currentScale -= STEP_SCALE;
+    updateScale();
+  }
 };
 
-const onBiggerControlClick = () => {
-  scaleImage(Math.min(parseInt(scaleControlValue.value, 10) + STEP_SCALE, MAX_SCALE));
+const onBiggerButtonClick = () => {
+  if (currentScale < MAX_SCALE) {
+    currentScale += STEP_SCALE;
+    updateScale();
+  }
 };
 
-const setScale = () => scaleImage(DEFAULT_SCALE);
-
-const addListener = () => {
-  scaleSmallButton.addEventListener('click', onSmallerControlClick);
-  scaleBigButton.addEventListener('click', onBiggerControlClick);
+const resetScale = () => {
+  currentScale = DEFAULT_SCALE;
+  updateScale();
 };
 
-const removeListener = () => {
-  scaleSmallButton.removeEventListener('click', onSmallerControlClick);
-  scaleBigButton.removeEventListener('click', onBiggerControlClick);
-};
+scaleSmallButton.addEventListener('click', onSmallerButtonClick);
+scaleBigButton.addEventListener('click', onBiggerButtonClick);
 
-const init = () => {
-  setScale();
-  addListener();
-};
-
-const reset = () => {
-  setScale();
-  removeListener();
-};
-
-export { init, reset };
+export {resetScale};
