@@ -8,6 +8,7 @@ import './photo.js';
 const MAX_HASHTAGS_COUNT = 5;
 const CHARACTERS_MAX_COUNT = 140;
 const VALID_SYMBOLS = /^(#([a-zA-Zа-яА-Я0-9]{1,19})|)$/;
+
 const HashtagErrorMessage = {
   INVALID_HASHTAG: 'Ошибка! Хэш-тег должен начинаться с # и содержать только буквы и цифры.',
   NOT_UNIQUE: 'Ошибка! Хэш-теги не должны повторяться',
